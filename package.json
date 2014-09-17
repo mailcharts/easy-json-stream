@@ -1,0 +1,14 @@
+{
+  "name": "easy-json-stream",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Tom Buchok <tom@buchok.com> (http://buchok.com/)",
+  "license": "ISC",
+  "devDependencies": {
+    "tap": "^0.4.12"
+  }
+}
