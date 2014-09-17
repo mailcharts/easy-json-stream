@@ -1,7 +1,7 @@
 {
   "name": "easy-json-stream",
   "version": "1.0.0",
-  "description": "",
+  "description": "Stream objects to JSON and JSON into objects.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -10,5 +10,21 @@
   "license": "ISC",
   "devDependencies": {
     "tap": "^0.4.12"
-  }
+  },
+  "directories": {
+    "test": "test"
+  },
+  "dependencies": {},
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/mailcharts/easy-json-stream.git"
+  },
+  "keywords": [
+    "json",
+    "streams"
+  ],
+  "bugs": {
+    "url": "https://github.com/mailcharts/easy-json-stream/issues"
+  },
+  "homepage": "https://github.com/mailcharts/easy-json-stream"
 }
