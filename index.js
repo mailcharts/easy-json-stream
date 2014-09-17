@@ -6,7 +6,8 @@ util.inherits(StringifyStream, Transform);
 function StringifyStream(options) {
   options = options || {};
   Transform.call(this, { objectMode: true });
-  this.push(options.head);
+  if (options.head)
+    this.push(options.head);
   this.tail = options.tail;
   this.sep = options.sep || ',';
   this.first = true;
@@ -35,15 +36,21 @@ ParseStream.prototype._transform = function(chunk, enc, next) {
   next();
 };
 ParseStream.prototype._flush = function(done) {
-  this.push(JSON.parse(this.buffer.toString()));
-  done();
+  try {
+    var data = JSON.parse(this.buffer.toString()); 
+    this.push(data);
+  } catch (err) {
+    this.emit('error', err);
+  } finally {
+    done();
+  }
 };
 
 module.exports = {
-  stringify: function stringify() {
-    return new StringifyStream;
+  stringify: function stringify(options) {
+    return new StringifyStream(options);
   },
-  parse: function parse() {
-    return new ParseStream;
+  parse: function parse(options) {
+    return new ParseStream(options);
   }
 }
