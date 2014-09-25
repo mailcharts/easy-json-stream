@@ -97,7 +97,7 @@ test('stringify [no data]', function(t) {
   var stream = json.stringify({ head: '[', tail: ']' })
     .on('data', buffer.push.bind(buffer))
     .on('end', function() {
-      t.notOk(buffer.length, 'no data added to buffer');
+      t.equals(buffer.join(''), '[]', 'empty array added to buffer');
       t.end();
     })
   stream.end();
