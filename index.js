@@ -20,7 +20,8 @@ StringifyStream.prototype._transform = function(chunk, enc, next) {
 };
 
 StringifyStream.prototype._flush = function(done) {
-  this.push(this.tail);
+  if (!this.first)
+    this.push(this.tail);
   done();
 }
 

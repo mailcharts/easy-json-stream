@@ -1,6 +1,6 @@
 {
   "name": "easy-json-stream",
-  "version": "1.0.2",
+  "version": "1.1.0",
   "description": "Stream objects to JSON and JSON into objects.",
   "main": "index.js",
   "scripts": {
