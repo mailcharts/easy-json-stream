@@ -6,15 +6,14 @@ util.inherits(StringifyStream, Transform);
 function StringifyStream(options) {
   options = options || {};
   Transform.call(this, { objectMode: true });
-  if (options.head)
-    this.push(options.head);
+  this.head = options.head;
   this.tail = options.tail;
   this.sep = options.sep || ',';
   this.first = true;
 }
 StringifyStream.prototype._transform = function(chunk, enc, next) {
-  if (!this.first)
-    this.push(this.sep);
+  if (!this.first) this.push(this.sep);
+  else if (this.head) this.push(this.head);
   this.push(JSON.stringify(chunk));
   this.first = false;
   next();
