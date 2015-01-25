@@ -26,6 +26,20 @@ StringifyStream.prototype._flush = function(done) {
   done();
 }
 
+util.inherits(CSVStream, Transform);
+function CSVStream(options) {
+  Transform.call(this, { objectMode: true });
+  this.count = 0;
+}
+CSVStream.prototype._transform = function(chunk, enc, next) {
+  var chunks = [];
+  if (++this.count < 2)
+    chunks.push(Object.keys(chunk).join(','));
+  chunks.push(Object.keys(chunk).map(function(key) { return chunk[key] }).join(','));
+  chunks.forEach(this.push.bind(this));
+  next();
+}
+
 util.inherits(ParseStream, Transform);
 function ParseStream(options) {
   options = options || { objectMode: true };
@@ -50,6 +64,9 @@ ParseStream.prototype._flush = function(done) {
 module.exports = {
   stringify: function stringify(options) {
     return new StringifyStream(options);
+  },
+  csv: function csv(options) {
+    return new CSVStream(options);
   },
   parse: function parse(options) {
     return new ParseStream(options);

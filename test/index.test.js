@@ -10,6 +10,7 @@ var path = require('path')
 test('fn', function(t) {
   t.ok(json.stringify, 'stringify is a thing');
   t.ok(json.parse, 'parse is a thing');
+  t.ok(json.csv, 'csv is a thing');
   t.end();
 });
 
@@ -101,4 +102,26 @@ test('stringify [no data]', function(t) {
       t.end();
     })
   stream.end();
+});
+
+test('csv', function(t) {
+  var data = [{ one: 1, two: 2, three: 3 }, { one: 'i', two: 'ii', three: 'iii' }]
+    , readable = new stream.Readable({ objectMode: true })
+    , buffer = []
+  ;
+  readable._read = function(){};
+  readable
+    .pipe(json.csv())
+    .on('data', buffer.push.bind(buffer))
+    .once('data', function(chunk) {
+      var headers = chunk.split(',');
+      t.deepEquals(headers, ['one', 'two', 'three'], 'it should emit the headers first');
+    })
+    .on('end', function() {
+      t.equals(buffer[1], '1,2,3', 'it should emit rows of data');
+      t.end();
+    }).resume()
+  ;
+  data.forEach(readable.push.bind(readable));
+  readable.push(null);
 });
