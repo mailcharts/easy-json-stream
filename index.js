@@ -28,6 +28,10 @@ StringifyStream.prototype._flush = function(done) {
 
 util.inherits(CSVStream, Transform);
 var escapeCommasAndSingleQuotes = function(value) {
+  if (Array.isArray(value))
+    value = value[0];
+  if (Object.prototype.toString.call(value) === '[object Object]')
+    value = JSON.stringify(value);
   if (!/\,/.test(value))
     return value;
   return "'" + value.replace(/'/g, '\'') + "'";
