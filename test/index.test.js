@@ -115,10 +115,10 @@ test('csv', function(t) {
     .on('data', buffer.push.bind(buffer))
     .once('data', function(chunk) {
       var headers = chunk.split(',');
-      t.deepEquals(headers, ['one', 'two', 'three'], 'it should emit the headers first');
+      t.deepEquals(headers, ['one', 'two', 'three\n'], 'it should emit the headers first');
     })
     .on('end', function() {
-      t.equals(buffer[1], '1,2,3', 'it should emit rows of data');
+      t.equals(buffer[1], '1,2,3\n', 'it should emit rows of data');
       t.end();
     }).resume()
   ;
@@ -136,7 +136,7 @@ test('csv - quotes', function(t) {
     .pipe(json.csv())
     .on('data', buffer.push.bind(buffer))
     .on('end', function() {
-      t.equals(buffer[2], "'it\'s, one','it\'s, two','it\'s, three'", 'it should escape commas and single quotes');
+      t.equals(buffer[2], "'it\'s, one','it\'s, two','it\'s, three'\n", 'it should escape commas and single quotes');
       t.end();
     }).resume()
   ;

@@ -44,8 +44,8 @@ function CSVStream(options) {
 CSVStream.prototype._transform = function(chunk, enc, next) {
   var chunks = [];
   if (++this.count < 2)
-    chunks.push(Object.keys(chunk).join(','));
-  chunks.push(Object.keys(chunk).map(function(key) { return chunk[key] }).map(escapeCommasAndSingleQuotes).join(','));
+    chunks.push(Object.keys(chunk).join(',') + '\n');
+  chunks.push(Object.keys(chunk).map(function(key) { return chunk[key] }).map(escapeCommasAndSingleQuotes).join(',') + '\n');
   chunks.forEach(this.push.bind(this));
   next();
 }
