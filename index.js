@@ -27,6 +27,12 @@ StringifyStream.prototype._flush = function(done) {
 }
 
 util.inherits(CSVStream, Transform);
+var escapeCommasAndSingleQuotes = function(value) {
+  if (!/\,/.test(value))
+    return value;
+  return "'" + value.replace(/'/g, '\'') + "'";
+};
+
 function CSVStream(options) {
   Transform.call(this, { objectMode: true });
   this.count = 0;
@@ -35,7 +41,7 @@ CSVStream.prototype._transform = function(chunk, enc, next) {
   var chunks = [];
   if (++this.count < 2)
     chunks.push(Object.keys(chunk).join(','));
-  chunks.push(Object.keys(chunk).map(function(key) { return chunk[key] }).join(','));
+  chunks.push(Object.keys(chunk).map(function(key) { return chunk[key] }).map(escapeCommasAndSingleQuotes).join(','));
   chunks.forEach(this.push.bind(this));
   next();
 }

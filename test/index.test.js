@@ -125,3 +125,21 @@ test('csv', function(t) {
   data.forEach(readable.push.bind(readable));
   readable.push(null);
 });
+
+test('csv - quotes', function(t) {
+  var data = [{ one: 1, two: 2, three: 3 }, { one: "it's, one", two: "it's, two", three: "it's, three" }]
+    , readable = new stream.Readable({ objectMode: true })
+    , buffer = []
+  ;
+  readable._read = function(){};
+  readable
+    .pipe(json.csv())
+    .on('data', buffer.push.bind(buffer))
+    .on('end', function() {
+      t.equals(buffer[2], "'it\'s, one','it\'s, two','it\'s, three'", 'it should escape commas and single quotes');
+      t.end();
+    }).resume()
+  ;
+  data.forEach(readable.push.bind(readable));
+  readable.push(null);
+});
