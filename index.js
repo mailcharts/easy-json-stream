@@ -34,7 +34,7 @@ var escapeCommasAndSingleQuotes = function(value) {
     value = JSON.stringify(value);
   if (!/\,/.test(value))
     return value;
-  return "'" + value.replace(/'/g, '\'') + "'";
+  return JSON.stringify(value);
 };
 
 function CSVStream(options) {

@@ -136,7 +136,7 @@ test('csv - quotes', function(t) {
     .pipe(json.csv())
     .on('data', buffer.push.bind(buffer))
     .on('end', function() {
-      t.equals(buffer[2], "'it\'s, one','it\'s, two','it\'s, three'\n", 'it should escape commas and single quotes');
+      t.equals(buffer[2], '"it\'s, one","it\'s, two","it\'s, three"\n', 'it should escape commas and single quotes');
       t.end();
     }).resume()
   ;
